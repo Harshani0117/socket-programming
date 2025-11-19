@@ -3,13 +3,9 @@ import threading
 import tkinter as tk
 from tkinter import scrolledtext, messagebox, simpledialog
 
-# ============================
-# Configuration
-# ============================
-SERVER_IP = "20.193.248.167"  # Replace with Azure VM public IP
+SERVER_IP = "20.193.248.167"
 PORT = 9999
-TEST_MODE = False  # Set to True to test GUI without server
-
+TEST_MODE = False
 
 class ChatClientGUI:
     def __init__(self, master):
@@ -18,25 +14,20 @@ class ChatClientGUI:
         self.master.geometry("480x550")
         self.master.configure(bg="#f5f5f5")
 
-        # Prevent window closing without disconnecting
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # Username
         self.username = None
 
-        # Chat display area
         self.chat_area = scrolledtext.ScrolledText(
             master, wrap=tk.WORD, state='disabled',
             font=("Arial", 11), bg="#ffffff", fg="#333333"
         )
         self.chat_area.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        # Message input
         self.message_entry = tk.Entry(master, font=("Arial", 12), bg="#ffffff", fg="#333333")
         self.message_entry.pack(padx=10, pady=(0, 10), fill=tk.X)
         self.message_entry.bind("<Return>", self.send_message)
 
-        # Button frame
         button_frame = tk.Frame(master, bg="#f5f5f5")
         button_frame.pack(fill=tk.X)
 
@@ -56,7 +47,6 @@ class ChatClientGUI:
         self.running = False
 
     def connect_to_server(self):
-        # Ask for username before connecting
         if not self.username:
             self.username = simpledialog.askstring("Username", "Enter your name:")
             if not self.username:
@@ -107,7 +97,7 @@ class ChatClientGUI:
     def send_message(self, event=None):
         message = self.message_entry.get().strip()
         if not message:
-            return  # Prevent sending empty messages
+            return
 
         if TEST_MODE:
             self.display_message(f">> {self.username}: {message}")
